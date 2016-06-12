@@ -1,6 +1,7 @@
 #include "timer.h"
 #include <mutex>
 #include <limits>
+#include <algorithm>
 
 namespace co
 {
@@ -176,7 +177,7 @@ long long CoTimerMgr::GetNextTriggerTime()
 {
     long long sys_now = std::chrono::time_point_cast<std::chrono::milliseconds>(SystemNow()).time_since_epoch().count();
     long long sdy_now = std::chrono::time_point_cast<std::chrono::milliseconds>(SteadyNow()).time_since_epoch().count();
-
+	
     long long sys_delta = (std::max)(system_next_trigger_time_ - sys_now, (long long)0);
     long long sdy_delta = (std::max)(steady_next_trigger_time_ - sdy_now, (long long)0);
 
