@@ -6,8 +6,8 @@ namespace co {
 
 struct ThreadLocalInfo;
 
-// 协程执行器
-//   管理一批协程的共享栈和调度, 非线程安全.
+// coroutine executor
+// manager a batch of coroutine share stack and schedule, not thread safe
 class Processer
     : public TSQueueHook
 {

@@ -7,7 +7,7 @@
 namespace co
 {
 
-// å¯è¢«ä¼˜åŒ–çš„lock guard
+// ¿É±»ÓÅ»¯µÄlock guard
 struct fake_lock_guard
 {
     template <typename Mutex>
@@ -16,11 +16,11 @@ struct fake_lock_guard
 
 ///////////////////////////////////////
 /*
-* è¿™é‡Œæ„å»ºäº†ä¸€ä¸ªåŠä¾µå…¥å¼çš„å¼•ç”¨è®¡æ•°ä½“ç³», ä½¿ç”¨shared_ptrè¯­æ„çš„åŒæ—¶,
-* åˆå¯ä»¥å°†å¯¹è±¡æ”¾å…¥ä¾µå…¥å¼å®¹å™¨, å¾—åˆ°æä½³çš„æ€§èƒ½.
+* ÕâÀï¹¹½¨ÁËÒ»¸ö°ëÇÖÈëÊ½µÄÒıÓÃ¼ÆÊıÌåÏµ, Ê¹ÓÃshared_ptrÓïÒâµÄÍ¬Ê±,
+* ÓÖ¿ÉÒÔ½«¶ÔÏó·ÅÈëÇÖÈëÊ½ÈİÆ÷, µÃµ½¼«¼ÑµÄĞÔÄÜ.
 */
 
-// ä¾µå…¥å¼å¼•ç”¨è®¡æ•°å¯¹è±¡åŸºç±»
+// ÇÖÈëÊ½ÒıÓÃ¼ÆÊı¶ÔÏó»ùÀà
 struct RefObject
 {
     std::atomic<long> reference_;
@@ -43,7 +43,7 @@ struct RefObject
     RefObject& operator=(RefObject const&) = delete;
 };
 
-// è£¸æŒ‡é’ˆ -> shared_ptr
+// ÂãÖ¸Õë -> shared_ptr
 template <typename T>
 typename std::enable_if<std::is_base_of<RefObject, T>::value,
     std::shared_ptr<T>>::type
@@ -86,7 +86,7 @@ DecrementRef(T * ptr)
 {
 }
 
-// å¼•ç”¨è®¡æ•°guard
+// ÒıÓÃ¼ÆÊıguard
 class RefGuard
 {
 public:
@@ -113,7 +113,7 @@ private:
 };
 ///////////////////////////////////////
 
-// åˆ›å»ºåç¨‹çš„æºç æ–‡ä»¶ä½ç½®
+// ´´½¨Ğ­³ÌµÄÔ´ÂëÎÄ¼şÎ»ÖÃ
 struct SourceLocation
 {
     const char* file_ = nullptr;

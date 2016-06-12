@@ -19,74 +19,74 @@
 
 namespace co {
 
-// åç¨‹ä¸­æŠ›å‡ºæœªæ•è·å¼‚å¸¸æ—¶çš„å¤„ç†æ–¹å¼
-enum class eCoExHandle : uint8_t
-{
-    immedaitely_throw,  // ç«‹å³æŠ›å‡º
-    delay_rethrow,      // å»¶è¿Ÿåˆ°è°ƒåº¦å™¨è°ƒåº¦æ—¶æŠ›å‡º
-    debugger_only,      // ä»…æ‰“å°è°ƒè¯•ä¿¡æ¯
-};
+    // Ğ­³ÌÖĞÅ×³öÎ´²¶»ñÒì³£Ê±µÄ´¦Àí·½Ê½
+    enum class eCoExHandle : uint8_t
+    {
+        immedaitely_throw,  // Á¢¼´Å×³ö
+        delay_rethrow,      // ÑÓ³Ùµ½µ÷¶ÈÆ÷µ÷¶ÈÊ±Å×³ö
+        debugger_only,      // ½ö´òÓ¡µ÷ÊÔĞÅÏ¢
+    };
 
-///---- é…ç½®é€‰é¡¹
-struct CoroutineOptions
-{
-    /*********************** Debug options **********************/
-    // è°ƒè¯•é€‰é¡¹, ä¾‹å¦‚: dbg_switch æˆ– dbg_hook|dbg_task|dbg_wait
-    uint64_t debug = 0;            
+    ///---- ÅäÖÃÑ¡Ïî
+    struct CoroutineOptions
+    {
+        /*********************** Debug options **********************/
+        // µ÷ÊÔÑ¡Ïî, ÀıÈç: dbg_switch »ò dbg_hook|dbg_task|dbg_wait
+        uint64_t debug = 0;
 
-    // è°ƒè¯•ä¿¡æ¯è¾“å‡ºä½ç½®ï¼Œæ”¹å†™è¿™ä¸ªé…ç½®é¡¹å¯ä»¥é‡å®šå‘è¾“å‡ºä½ç½®
-    FILE* debug_output = stdout;   
-    /************************************************************/
+        // µ÷ÊÔĞÅÏ¢Êä³öÎ»ÖÃ£¬¸ÄĞ´Õâ¸öÅäÖÃÏî¿ÉÒÔÖØ¶¨ÏòÊä³öÎ»ÖÃ
+        FILE* debug_output = stdout;
+        /************************************************************/
 
-    /**************** Stack and Exception options ***************/
-    // åç¨‹ä¸­æŠ›å‡ºæœªæ•è·å¼‚å¸¸æ—¶çš„å¤„ç†æ–¹å¼
-    eCoExHandle exception_handle = eCoExHandle::immedaitely_throw;
+        /**************** Stack and Exception options ***************/
+        // Ğ­³ÌÖĞÅ×³öÎ´²¶»ñÒì³£Ê±µÄ´¦Àí·½Ê½
+        eCoExHandle exception_handle = eCoExHandle::immedaitely_throw;
 
-    // åç¨‹æ ˆå¤§å°ä¸Šé™, åªä¼šå½±å“åœ¨æ­¤å€¼è®¾ç½®ä¹‹åæ–°åˆ›å»ºçš„P, å»ºè®®åœ¨é¦–æ¬¡Runå‰è®¾ç½®.
-    // stack_sizeå»ºè®®è®¾ç½®ä¸è¶…è¿‡1MB
-    // Linuxç³»ç»Ÿä¸‹, è®¾ç½®2MBçš„stack_sizeä¼šå¯¼è‡´æäº¤å†…å­˜çš„ä½¿ç”¨é‡æ¯”1MBçš„stack_sizeå¤š10å€.
-    uint32_t stack_size = 1 * 1024 * 1024; 
+        // Ğ­³ÌÕ»´óĞ¡ÉÏÏŞ, Ö»»áÓ°ÏìÔÚ´ËÖµÉèÖÃÖ®ºóĞÂ´´½¨µÄP, ½¨ÒéÔÚÊ×´ÎRunÇ°ÉèÖÃ.
+        // stack_size½¨ÒéÉèÖÃ²»³¬¹ı1MB
+        // LinuxÏµÍ³ÏÂ, ÉèÖÃ2MBµÄstack_size»áµ¼ÖÂÌá½»ÄÚ´æµÄÊ¹ÓÃÁ¿±È1MBµÄstack_size¶à10±¶.
+        uint32_t stack_size = 1 * 1024 * 1024;
 
-    // æ²¡æœ‰åç¨‹éœ€è¦è°ƒåº¦æ—¶, Runæœ€å¤šä¼‘çœ çš„æ¯«ç§’æ•°(å¼€å‘é«˜å®æ—¶æ€§ç³»ç»Ÿå¯ä»¥è€ƒè™‘è°ƒä½è¿™ä¸ªå€¼)
-    uint8_t max_sleep_ms = 20;
+        // Ã»ÓĞĞ­³ÌĞèÒªµ÷¶ÈÊ±, Run×î¶àĞİÃßµÄºÁÃëÊı(¿ª·¢¸ßÊµÊ±ĞÔÏµÍ³¿ÉÒÔ¿¼ÂÇµ÷µÍÕâ¸öÖµ)
+        uint8_t max_sleep_ms = 20;
 
-    // æ¯ä¸ªå®šæ—¶å™¨æ¯å¸§å¤„ç†çš„ä»»åŠ¡æ•°é‡(ä¸º0è¡¨ç¤ºä¸é™, æ¯å¸§å¤„ç†å½“å‰æ‰€æœ‰å¯ä»¥å¤„ç†çš„ä»»åŠ¡)
-    uint32_t timer_handle_every_cycle = 0;
+        // Ã¿¸ö¶¨Ê±Æ÷Ã¿Ö¡´¦ÀíµÄÈÎÎñÊıÁ¿(Îª0±íÊ¾²»ÏŞ, Ã¿Ö¡´¦Àíµ±Ç°ËùÓĞ¿ÉÒÔ´¦ÀíµÄÈÎÎñ)
+        uint32_t timer_handle_every_cycle = 0;
 
-    // epollæ¯æ¬¡è§¦å‘çš„eventæ•°é‡(Windowsä¸‹æ— æ•ˆ)
-    uint32_t epoll_event_size = 10240;
+        // epollÃ¿´Î´¥·¢µÄeventÊıÁ¿(WindowsÏÂÎŞĞ§)
+        uint32_t epoll_event_size = 10240;
 
-    // æ˜¯å¦å¯ç”¨workstealç®—æ³•
-    bool enable_work_steal = true;
+        // ÊÇ·ñÆôÓÃworkstealËã·¨
+        bool enable_work_steal = true;
 
-    // æ˜¯å¦å¯ç”¨åç¨‹ç»Ÿè®¡åŠŸèƒ½(ä¼šæœ‰ä¸€ç‚¹æ€§èƒ½æŸè€—, é»˜è®¤ä¸å¼€å¯)
-    bool enable_coro_stat = false;
+        // ÊÇ·ñÆôÓÃĞ­³ÌÍ³¼Æ¹¦ÄÜ(»áÓĞÒ»µãĞÔÄÜËğºÄ, Ä¬ÈÏ²»¿ªÆô)
+        bool enable_coro_stat = false;
 
-    // æ ˆé¡¶è®¾ç½®ä¿æŠ¤å†…å­˜æ®µçš„å†…å­˜é¡µæ•°é‡(ä»…linuxä¸‹æœ‰æ•ˆ)(é»˜è®¤ä¸º0, å³:ä¸è®¾ç½®)
-    // åœ¨æ ˆé¡¶å†…å­˜å¯¹é½åçš„å‰å‡ é¡µè®¾ç½®ä¸ºprotectå±æ€§.
-    // æ‰€ä»¥å¼€å¯æ­¤é€‰é¡¹æ—¶, stack_sizeä¸èƒ½å°‘äºprotect_stack_page+1é¡µ
-    uint32_t & protect_stack_page = StackAllocator::get_protect_stack_page();
+        // Õ»¶¥ÉèÖÃ±£»¤ÄÚ´æ¶ÎµÄÄÚ´æÒ³ÊıÁ¿(½ölinuxÏÂÓĞĞ§)(Ä¬ÈÏÎª0, ¼´:²»ÉèÖÃ)
+        // ÔÚÕ»¶¥ÄÚ´æ¶ÔÆëºóµÄÇ°¼¸Ò³ÉèÖÃÎªprotectÊôĞÔ.
+        // ËùÒÔ¿ªÆô´ËÑ¡ÏîÊ±, stack_size²»ÄÜÉÙÓÚprotect_stack_page+1Ò³
+        uint32_t & protect_stack_page = StackAllocator::get_protect_stack_page();
 
-    // è®¾ç½®æ ˆå†…å­˜ç®¡ç†(malloc/free)
-    // ä½¿ç”¨fiberåšåç¨‹åº•å±‚æ—¶æ— æ•ˆ
-    stack_malloc_fn_t & stack_malloc_fn = StackAllocator::get_malloc_fn();
-    stack_free_fn_t & stack_free_fn = StackAllocator::get_free_fn();
-};
-///-------------------
+        // ÉèÖÃÕ»ÄÚ´æ¹ÜÀí(malloc/free)
+        // Ê¹ÓÃfiber×öĞ­³Ìµ×²ãÊ±ÎŞĞ§
+        stack_malloc_fn_t & stack_malloc_fn = StackAllocator::get_malloc_fn();
+        stack_free_fn_t & stack_free_fn = StackAllocator::get_free_fn();
+    };
+    ///-------------------
 
-struct ThreadLocalInfo
-{
-    int thread_id = -1;     // Run thread index, increment from 1.
-    uint8_t sleep_ms = 0;
-    Processer *proc = nullptr;
-};
+    struct ThreadLocalInfo
+    {
+        int thread_id = -1;     // Run thread index, increment from 1.
+        uint8_t sleep_ms = 0;
+        Processer *proc = nullptr;
+    };
 
-class ThreadPool;
+    class ThreadPool;
 
-class Scheduler
-{
+    class Scheduler
+    {
     public:
-        // Runæ—¶æ‰§è¡Œçš„å†…å®¹
+        // RunÊ±Ö´ĞĞµÄÄÚÈİ
         enum eRunFlags
         {
             erf_do_coroutines = 0x1,
@@ -104,53 +104,53 @@ class Scheduler
 
         static Scheduler& getInstance();
 
-        // è·å–é…ç½®é€‰é¡¹
+        // »ñÈ¡ÅäÖÃÑ¡Ïî
         CoroutineOptions& GetOptions();
 
-        // åˆ›å»ºä¸€ä¸ªåç¨‹
+        // ´´½¨Ò»¸öĞ­³Ì
         void CreateTask(TaskF const& fn, std::size_t stack_size,
-                const char* file, int lineno, int dispatch);
+            const char* file, int lineno, int dispatch);
 
-        // å½“å‰æ˜¯å¦å¤„äºåç¨‹ä¸­
+        // µ±Ç°ÊÇ·ñ´¦ÓÚĞ­³ÌÖĞ
         bool IsCoroutine();
 
-        // æ˜¯å¦æ²¡æœ‰åç¨‹å¯æ‰§è¡Œ
+        // ÊÇ·ñÃ»ÓĞĞ­³Ì¿ÉÖ´ĞĞ
         bool IsEmpty();
 
-        // å½“å‰åç¨‹è®©å‡ºæ‰§è¡Œæƒ
+        // µ±Ç°Ğ­³ÌÈÃ³öÖ´ĞĞÈ¨
         void CoYield();
 
-        // è°ƒåº¦å™¨è°ƒåº¦å‡½æ•°, å†…éƒ¨æ‰§è¡Œåç¨‹ã€è°ƒåº¦åç¨‹
+        // µ÷¶ÈÆ÷µ÷¶Èº¯Êı, ÄÚ²¿Ö´ĞĞĞ­³Ì¡¢µ÷¶ÈĞ­³Ì
         uint32_t Run(int flags = erf_all);
 
-        // å¾ªç¯Runç›´åˆ°æ²¡æœ‰åç¨‹ä¸ºæ­¢
-        // @loop_task_count: ä¸è®¡æ•°çš„å¸¸é©»åç¨‹.
-        //    ä¾‹å¦‚ï¼šloop_task_count == 2æ—¶, è¿˜å‰©æœ€å2ä¸ªåç¨‹çš„æ—¶å€™è¿™ä¸ªå‡½æ•°å°±ä¼šreturn.
-        // @remarks: è¿™ä¸ªæ¥å£ä¼šè‡³å°‘æ‰§è¡Œä¸€æ¬¡Run.
+        // Ñ­»·RunÖ±µ½Ã»ÓĞĞ­³ÌÎªÖ¹
+        // @loop_task_count: ²»¼ÆÊıµÄ³£×¤Ğ­³Ì.
+        //    ÀıÈç£ºloop_task_count == 2Ê±, »¹Ê£×îºó2¸öĞ­³ÌµÄÊ±ºòÕâ¸öº¯Êı¾Í»áreturn.
+        // @remarks: Õâ¸ö½Ó¿Ú»áÖÁÉÙÖ´ĞĞÒ»´ÎRun.
         void RunUntilNoTask(uint32_t loop_task_count = 0);
-        
-        // æ— é™å¾ªç¯æ‰§è¡ŒRun
+
+        // ÎŞÏŞÑ­»·Ö´ĞĞRun
         void RunLoop();
 
-        // å½“å‰åç¨‹æ€»æ•°é‡
+        // µ±Ç°Ğ­³Ì×ÜÊıÁ¿
         uint32_t TaskCount();
 
-        // å½“å‰åç¨‹ID, IDä»1å¼€å§‹ï¼ˆä¸åœ¨åç¨‹ä¸­åˆ™è¿”å›0ï¼‰
+        // µ±Ç°Ğ­³ÌID, ID´Ó1¿ªÊ¼£¨²»ÔÚĞ­³ÌÖĞÔò·µ»Ø0£©
         uint64_t GetCurrentTaskID();
 
-        // å½“å‰åç¨‹åˆ‡æ¢çš„æ¬¡æ•°
+        // µ±Ç°Ğ­³ÌÇĞ»»µÄ´ÎÊı
         uint64_t GetCurrentTaskYieldCount();
 
-        // è®¾ç½®å½“å‰åç¨‹è°ƒè¯•ä¿¡æ¯, æ‰“å°è°ƒè¯•ä¿¡æ¯æ—¶å°†å›æ˜¾
+        // ÉèÖÃµ±Ç°Ğ­³Ìµ÷ÊÔĞÅÏ¢, ´òÓ¡µ÷ÊÔĞÅÏ¢Ê±½«»ØÏÔ
         void SetCurrentTaskDebugInfo(std::string const& info);
 
-        // è·å–å½“å‰åç¨‹çš„è°ƒè¯•ä¿¡æ¯, è¿”å›çš„å†…å®¹åŒ…æ‹¬ç”¨æˆ·è‡ªå®šä¹‰çš„ä¿¡æ¯å’Œåç¨‹ID
+        // »ñÈ¡µ±Ç°Ğ­³ÌµÄµ÷ÊÔĞÅÏ¢, ·µ»ØµÄÄÚÈİ°üÀ¨ÓÃ»§×Ô¶¨ÒåµÄĞÅÏ¢ºÍĞ­³ÌID
         const char* GetCurrentTaskDebugInfo();
 
-        // è·å–å½“å‰çº¿ç¨‹ID.(æŒ‰æ‰§è¡Œè°ƒåº¦å™¨è°ƒåº¦çš„é¡ºåºè®¡)
+        // »ñÈ¡µ±Ç°Ïß³ÌID.(°´Ö´ĞĞµ÷¶ÈÆ÷µ÷¶ÈµÄË³Ğò¼Æ)
         uint32_t GetCurrentThreadID();
 
-        // è·å–å½“å‰è¿›ç¨‹ID.
+        // »ñÈ¡µ±Ç°½ø³ÌID.
         uint32_t GetCurrentProcessID();
 
     public:
@@ -159,7 +159,7 @@ class Scheduler
         void SleepSwitch(int timeout_ms);
 
         /// ------------------------------------------------------------------------
-        // @{ å®šæ—¶å™¨
+        // @{ ¶¨Ê±Æ÷
         template <typename DurationOrTimepoint>
         TimerId ExpireAt(DurationOrTimepoint const& dur_or_tp, CoTimer::fn_t const& fn)
         {
@@ -172,14 +172,14 @@ class Scheduler
         bool BlockCancelTimer(TimerId timer_id);
         // }@
         /// ------------------------------------------------------------------------
-    
+
         /// ------------------------------------------------------------------------
-        // @{ çº¿ç¨‹æ± 
+        // @{ Ïß³Ì³Ø
         ThreadPool& GetThreadPool();
         // }@
         /// ------------------------------------------------------------------------
 
-        // iowaitå¯¹è±¡
+        // iowait¶ÔÏó
         IoWait& GetIoWait() { return io_wait_; }
 
     public:
@@ -194,24 +194,24 @@ class Scheduler
         Scheduler& operator=(Scheduler const&) = delete;
         Scheduler& operator=(Scheduler &&) = delete;
 
-        // å°†ä¸€ä¸ªåç¨‹åŠ å…¥å¯æ‰§è¡Œé˜Ÿåˆ—ä¸­
+        // ½«Ò»¸öĞ­³Ì¼ÓÈë¿ÉÖ´ĞĞ¶ÓÁĞÖĞ
         void AddTaskRunnable(Task* tk, int dispatch = egod_default);
 
-        // Runå‡½æ•°çš„ä¸€éƒ¨åˆ†, å¤„ç†runnableçŠ¶æ€çš„åç¨‹
+        // Runº¯ÊıµÄÒ»²¿·Ö, ´¦Àírunnable×´Ì¬µÄĞ­³Ì
         uint32_t DoRunnable(bool allow_steal = true);
 
-        // Runå‡½æ•°çš„ä¸€éƒ¨åˆ†, å¤„ç†epollç›¸å…³
+        // Runº¯ÊıµÄÒ»²¿·Ö, ´¦ÀíepollÏà¹Ø
         int DoEpoll(int wait_milliseconds);
 
-        // Runå‡½æ•°çš„ä¸€éƒ¨åˆ†, å¤„ç†sleepç›¸å…³
-        // @next_ms: è·ç¦»ä¸‹ä¸€ä¸ªtimerè§¦å‘çš„æ¯«ç§’æ•°
+        // Runº¯ÊıµÄÒ»²¿·Ö, ´¦ÀísleepÏà¹Ø
+        // @next_ms: ¾àÀëÏÂÒ»¸ötimer´¥·¢µÄºÁÃëÊı
         uint32_t DoSleep(long long &next_ms);
 
-        // Runå‡½æ•°çš„ä¸€éƒ¨åˆ†, å¤„ç†å®šæ—¶å™¨
-        // @next_ms: è·ç¦»ä¸‹ä¸€ä¸ªtimerè§¦å‘çš„æ¯«ç§’æ•°
+        // Runº¯ÊıµÄÒ»²¿·Ö, ´¦Àí¶¨Ê±Æ÷
+        // @next_ms: ¾àÀëÏÂÒ»¸ötimer´¥·¢µÄºÁÃëÊı
         uint32_t DoTimer(long long &next_ms);
 
-        // è·å–çº¿ç¨‹å±€éƒ¨ä¿¡æ¯
+        // »ñÈ¡Ïß³Ì¾Ö²¿ĞÅÏ¢
         ThreadLocalInfo& GetLocalInfo();
 
         Processer* GetProcesser(std::size_t index);
@@ -219,7 +219,7 @@ class Scheduler
         // List of Processer
         LFLock proc_init_lock_;
         ProcList run_proc_list_;
-        std::atomic<uint32_t> dispatch_robin_index_{0};
+        std::atomic<uint32_t> dispatch_robin_index_{ 0 };
 
         // io block waiter.
         IoWait io_wait_;
@@ -232,8 +232,8 @@ class Scheduler
 
         ThreadPool *thread_pool_;
 
-        std::atomic<uint32_t> task_count_{0};
-        std::atomic<uint32_t> thread_id_{0};
+        std::atomic<uint32_t> task_count_{ 0 };
+        std::atomic<uint32_t> thread_id_{ 0 };
 
     private:
         friend class CoMutex;
@@ -243,7 +243,7 @@ class Scheduler
         friend class Processer;
         friend class FileDescriptorCtx;
         friend class CoDebugger;
-};
+    };
 
 } //namespace co
 

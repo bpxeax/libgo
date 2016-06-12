@@ -5,27 +5,27 @@
 namespace co
 {
 
-// ä¿¡å·ç®¡ç†å¯¹è±¡
-// @çº¿ç¨‹å®‰å…¨
+// ĞÅºÅ¹ÜÀí¶ÔÏó
+// @Ïß³Ì°²È«
 
 class BlockObject
 {
 protected:
     friend class Processer;
-    std::size_t wakeup_;        // å½“å‰ä¿¡å·æ•°é‡
-    std::size_t max_wakeup_;    // å¯ä»¥ç§¯ç´¯çš„ä¿¡å·æ•°é‡ä¸Šé™
-    TSQueue<Task, false> wait_queue_;   // ç­‰å¾…ä¿¡å·çš„åç¨‹é˜Ÿåˆ—
+    std::size_t wakeup_;        // µ±Ç°ĞÅºÅÊıÁ¿
+    std::size_t max_wakeup_;    // ¿ÉÒÔ»ıÀÛµÄĞÅºÅÊıÁ¿ÉÏÏŞ
+    TSQueue<Task, false> wait_queue_;   // µÈ´ıĞÅºÅµÄĞ­³Ì¶ÓÁĞ
     LFLock lock_;
 
 public:
     explicit BlockObject(std::size_t init_wakeup = 0, std::size_t max_wakeup = -1);
     ~BlockObject();
 
-    // é˜»å¡å¼ç­‰å¾…ä¿¡å·
+    // ×èÈûÊ½µÈ´ıĞÅºÅ
     void CoBlockWait();
 
-    // å¸¦è¶…æ—¶çš„é˜»å¡å¼ç­‰å¾…ä¿¡å·
-    // @returns: æ˜¯å¦æˆåŠŸç­‰åˆ°ä¿¡å·
+    // ´ø³¬Ê±µÄ×èÈûÊ½µÈ´ıĞÅºÅ
+    // @returns: ÊÇ·ñ³É¹¦µÈµ½ĞÅºÅ
 	bool CoBlockWaitTimed(MininumTimeDurationType timeo);
 
     template <typename R, typename P>

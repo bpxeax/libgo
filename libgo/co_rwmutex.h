@@ -4,7 +4,6 @@
 
 namespace co
 {
-    /// 读写锁
     class CoRWMutex
     {
         class CoRWMutexImpl;

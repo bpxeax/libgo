@@ -8,7 +8,7 @@
 namespace co
 {
 
-// ä¾µå…¥å¼æ•°æ®ç»“æ„HookåŸºç±»
+// ÇÖÈëÊ½Êı¾İ½á¹¹Hook»ùÀà
 struct TSQueueHook
 {
     TSQueueHook *prev = nullptr;
@@ -16,7 +16,7 @@ struct TSQueueHook
     void *check_ = nullptr;
 };
 
-// ä¾µå…¥å¼åŒå‘é“¾è¡¨
+// ÇÖÈëÊ½Ë«ÏòÁ´±í
 // moveable, noncopyable, foreachable
 // erase, size, empty: O(1)
 template <typename T>
@@ -121,7 +121,7 @@ public:
     inline bool check(void *c) { return check_ == c; }
 };
 
-// çº¿ç¨‹å®‰å…¨çš„é˜Ÿåˆ—(æ”¯æŒéšæœºåˆ é™¤)
+// Ïß³Ì°²È«µÄ¶ÓÁĞ(Ö§³ÖËæ»úÉ¾³ı)
 template <typename T, bool ThreadSafe = true>
 class TSQueue
 {
@@ -201,7 +201,7 @@ public:
 
     void push(SList<T> && elements)
     {
-        if (elements.empty()) return ;  // emptyçš„SListä¸èƒ½check, å› ä¸ºstealedçš„æ—¶å€™å·²ç»æ¸…é™¤check_.
+        if (elements.empty()) return ;  // emptyµÄSList²»ÄÜcheck, ÒòÎªstealedµÄÊ±ºòÒÑ¾­Çå³ıcheck_.
         assert(elements.check(check_));
         LockGuard lock(lck);
         count_ += elements.size();
@@ -212,7 +212,7 @@ public:
         elements.stealed();
     }
 
-    // O(n), æ…ç”¨.
+    // O(n), É÷ÓÃ.
     SList<T> pop_front(uint32_t n)
     {
         if (head_ == tail_) return SList<T>();
@@ -231,7 +231,7 @@ public:
         return SList<T>(first, last, c, check_);
     }
 
-    // O(n), æ…ç”¨.
+    // O(n), É÷ÓÃ.
     SList<T> pop_back(uint32_t n)
     {
         if (head_ == tail_) return SList<T>();
@@ -278,10 +278,10 @@ public:
     }
 };
 
-// çº¿ç¨‹å®‰å…¨çš„è·³è¡¨é˜Ÿåˆ—(æ”¯æŒå¿«é€Ÿpopå‡ºnä¸ªå…ƒç´ )
+// Ïß³Ì°²È«µÄÌø±í¶ÓÁĞ(Ö§³Ö¿ìËÙpop³ön¸öÔªËØ)
 template <typename T,
          bool ThreadSafe = true,
-         std::size_t SkipDistance = 64  // å¿…é¡»æ˜¯2çš„næ¬¡æ–¹
+         std::size_t SkipDistance = 64  // ±ØĞëÊÇ2µÄn´Î·½
          >
 class TSSkipQueue
 {
@@ -299,8 +299,8 @@ private:
     struct SkipLayer
     {
         std::deque<TSQueueHook*> indexs_;
-        std::size_t head_offset_ = 0;  // beginè·ç¦»headçš„è·ç¦»
-        std::size_t tail_offset_ = 0;  // endè·ç¦»tailçš„è·ç¦»
+        std::size_t head_offset_ = 0;  // begin¾àÀëheadµÄ¾àÀë
+        std::size_t tail_offset_ = 0;  // end¾àÀëtailµÄ¾àÀë
     };
 
     SkipLayer skip_layer_;
@@ -339,7 +339,7 @@ public:
     void push(T* element)
     {
         LockGuard lock(lck);
-        // æ’å…¥åˆ°å°¾ç«¯
+        // ²åÈëµ½Î²¶Ë
         TSQueueHook *hook = static_cast<TSQueueHook*>(element);
         tail_->next = hook;
         hook->prev = tail_;
@@ -349,7 +349,7 @@ public:
         ++ count_;
         IncrementRef(element);
 
-        // åˆ·æ–°è·³è¡¨
+        // Ë¢ĞÂÌø±í
         if (++skip_layer_.tail_offset_ == SkipDistance) {
             skip_layer_.tail_offset_ = 0;
             skip_layer_.indexs_.push_back(tail_);
@@ -366,13 +366,13 @@ public:
         n = (std::min)(n, count_);
         std::size_t next_step = n - 1;
 
-        // ä»è·³è¡¨ä¸ŠæŸ¥æ‰¾
+        // ´ÓÌø±íÉÏ²éÕÒ
         if ((SkipDistance - skip_layer_.head_offset_) > n) {
             skip_layer_.head_offset_ += n;
         } else if (skip_layer_.indexs_.empty()) {
             skip_layer_.tail_offset_ = count_ - n;
         } else {
-            // å¾€å‰æ‰¾
+            // ÍùÇ°ÕÒ
             std::size_t forward = (n + skip_layer_.head_offset_ - SkipDistance) / SkipDistance;
             next_step = (n + skip_layer_.head_offset_ - SkipDistance) & (SkipDistance - 1);
             auto it = skip_layer_.indexs_.begin();

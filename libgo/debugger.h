@@ -16,7 +16,7 @@ namespace co
 
 struct ThreadLocalInfo;
 
-// libgo调试工具
+// libgo debug tool
 class CoDebugger
 {
 public:
@@ -24,9 +24,6 @@ public:
     typedef std::deque<std::pair<std::string, count_t>> object_counts_t;
     typedef std::deque<std::pair<std::string, uint64_t>> object_counts_result_t;
 
-    /*
-    * 调试用基类
-    */
     template <typename Drived>
     struct DebuggerBase
     {
@@ -64,53 +61,39 @@ public:
 public:
     static CoDebugger& getInstance();
 
-    // 获取当前所有信息
     std::string GetAllInfo();
 
-    // 当前协程总数量
     uint32_t TaskCount();
 
-    // 当前协程ID, ID从1开始（不在协程中则返回0）
+	// id start from 1, no coroutine return 0
     uint64_t GetCurrentTaskID();
 
-    // 当前协程切换的次数
     uint64_t GetCurrentTaskYieldCount();
 
-    // 设置当前协程调试信息, 打印调试信息时将回显
     void SetCurrentTaskDebugInfo(std::string const& info);
 
-    // 获取当前协程的调试信息, 返回的内容包括用户自定义的信息和协程ID
     const char* GetCurrentTaskDebugInfo();
 
-    // 获取当前线程ID.(按执行调度器调度的顺序计)
     uint32_t GetCurrentThreadID();
 
-    // 获取当前进程ID.
     uint32_t GetCurrentProcessID();
 
-    // 获取当前计时器中的任务数量
     uint64_t GetTimerCount();
 
-    // 获取当前sleep计时器中的任务数量
     uint64_t GetSleepTimerCount();
 
-    // 获取当前所有协程的统计信息
     std::map<SourceLocation, uint32_t> GetTasksInfo();
     std::vector<std::map<SourceLocation, uint32_t>> GetTasksStateInfo();
 
 #if __linux__
     /// ------------ Linux -------------
-    // 获取Fd统计信息
     std::string GetFdInfo();
 
-    // 获取等待epoll的协程数量
     uint32_t GetEpollWaitCount();
 #endif
 
-    // 获取对象计数器统计信息
     object_counts_result_t GetDebuggerObjectCounts();
 
-    // 线程局部对象
     ThreadLocalInfo& GetLocalInfo();
 
 private:

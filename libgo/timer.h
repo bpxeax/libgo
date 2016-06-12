@@ -53,7 +53,6 @@ private:
 typedef std::shared_ptr<CoTimer> CoTimerPtr;
 typedef CoTimerPtr TimerId;
 
-// 定时器管理
 class CoTimerMgr
 {
 public:
@@ -75,7 +74,6 @@ public:
     bool Cancel(CoTimerPtr co_timer_ptr);
     bool BlockCancel(CoTimerPtr co_timer_ptr);
 
-    // @returns: 下一个触发的timer时间(单位: milliseconds)
     long long GetExpired(std::list<CoTimerPtr> &result, uint32_t n = 1);
 
     std::size_t Size();
@@ -96,9 +94,6 @@ private:
     SteadyDeadLines steady_deadlines_;
     LFLock lock_;
 
-    // 下一个timer触发的时间
-    //  单位: milliseconds
-    // 这个值由GetExpired时成功lock的线程来设置, 未lock成功的线程也允许读取.
     std::atomic<long long> system_next_trigger_time_;
     std::atomic<long long> steady_next_trigger_time_;
 };

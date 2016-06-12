@@ -6,7 +6,7 @@
 namespace co
 {
 
-/// 协程锁
+// coroutine mutex
 class CoMutex
 {
     std::shared_ptr<BlockObject> block_;

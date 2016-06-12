@@ -45,19 +45,19 @@ struct Task
     std::string debug_info_;
     TaskF fn_;
     SourceLocation location_;
-    std::exception_ptr eptr_;           // ä¿å­˜exceptionçš„æŒ‡é’ˆ
+    std::exception_ptr eptr_;           // ±£´æexceptionµÄÖ¸Õë
 
-    // Network IO blockæ‰€éœ€çš„æ•°æ®
-    // shared_pträ¸å…·æœ‰çº¿ç¨‹å®‰å…¨æ€§, åªèƒ½åœ¨åç¨‹ä¸­å’ŒSchedulerSwitchä¸­ä½¿ç”¨.
+    // Network IO blockËùĞèµÄÊı¾İ
+    // shared_ptr²»¾ßÓĞÏß³Ì°²È«ĞÔ, Ö»ÄÜÔÚĞ­³ÌÖĞºÍSchedulerSwitchÖĞÊ¹ÓÃ.
     IoSentryPtr io_sentry_;     
 
-    BlockObject* block_ = nullptr;      // sys_blockç­‰å¾…çš„blockå¯¹è±¡
-    uint32_t block_sequence_ = 0;       // sys_blockç­‰å¾…åºå·(ç”¨äºåšè¶…æ—¶æ ¡éªŒ)
-    CoTimerPtr block_timer_;         // sys_blockå¸¦è¶…æ—¶ç­‰å¾…æ‰€ç”¨çš„timer
-	MininumTimeDurationType block_timeout_{ 0 }; // sys_blockè¶…æ—¶æ—¶é—´
-    bool is_block_timeout_ = false;     // sys_blockçš„ç­‰å¾…æ˜¯å¦è¶…æ—¶
+    BlockObject* block_ = nullptr;      // sys_blockµÈ´ıµÄblock¶ÔÏó
+    uint32_t block_sequence_ = 0;       // sys_blockµÈ´ıĞòºÅ(ÓÃÓÚ×ö³¬Ê±Ğ£Ñé)
+    CoTimerPtr block_timer_;         // sys_block´ø³¬Ê±µÈ´ıËùÓÃµÄtimer
+    MininumTimeDurationType block_timeout_{ 0 }; // sys_block³¬Ê±Ê±¼ä
+    bool is_block_timeout_ = false;     // sys_blockµÄµÈ´ıÊÇ·ñ³¬Ê±
 
-    int sleep_ms_ = 0;                  // ç¡çœ æ—¶é—´
+    int sleep_ms_ = 0;                  // Ë¯ÃßÊ±¼ä
 
     explicit Task(TaskF const& fn, std::size_t stack_size,
             const char* file, int lineno);
