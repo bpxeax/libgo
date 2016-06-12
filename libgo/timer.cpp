@@ -14,7 +14,7 @@ CoTimer::CoTimer(fn_t const& fn)
 
 uint64_t CoTimer::GetId()
 {
-    return id_;
+	return id_;
 }
 
 void CoTimer::operator()()

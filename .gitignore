@@ -2,5 +2,15 @@
 *.t
 *.a
 *.so
+*.exe
 third_party/gtest/*
 libgo/cmake_config.h
+/build/.vs/libgo/v14/.suo
+/build/CMakeFiles/3.6.0-rc1/CompilerIdC/Debug/CompilerIdC.tlog
+/build/CMakeFiles/3.6.0-rc1/CompilerIdC/Debug/CMakeCCompilerId.obj
+/build/CMakeFiles/3.6.0-rc1/CompilerIdC/CMakeCCompilerId.c
+/build/CMakeFiles/3.6.0-rc1/CompilerIdC
+/build/CMakeFiles/3.6.0-rc1/CompilerIdCXX
+/build/CMakeFiles
+/build/Debug
+/build/libgo/main/CMakeFiles
